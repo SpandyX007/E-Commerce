@@ -1,0 +1,469 @@
+{% extends 'store/landingupdate.html' %}
+{% load static %}
+
+
+{% block content %}
+    <!-- Store Header Section -->
+
+	    <!-- Hero Carousel for Latest Products -->
+		<div class="carousel-section">
+			<div id="heroCarousel" class="carousel slide" data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li data-target="#heroCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#heroCarousel" data-slide-to="1"></li>
+					<li data-target="#heroCarousel" data-slide-to="2"></li>
+				</ol>
+				{% comment %} {% for product in products %} {% endcomment %}
+				<div class="carousel-inner">
+					<div class="carousel-item active" style="background-image: url({% static 'images/shirt.jpg' %});">
+						<div class="carousel-overlay"></div>
+						<div class="carousel-caption">
+							<h2 class="carousel-title">New Summer Collection</h2>
+							<p class="carousel-text">Discover the latest trends for the season with our exclusive summer collection.</p>
+							<a href="#" class="btn carousel-btn">Shop Now</a>
+						</div>
+						{% comment %} {% endfor %} {% endcomment %}
+					</div>
+					{% for product in products|slice:"2" %}
+					<div class="carousel-item" style="background-image: url({{product.imageURL}});">
+						<div class="carousel-overlay"></div>
+						<div class="carousel-caption">
+							<h2 class="carousel-title">Tech Gadgets on Sale</h2>
+							<p class="carousel-text">Up to 40% off on selected electronics and gadgets. Limited time offer!</p>
+							<a href="#" class="btn carousel-btn">View Offers</a>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+		</div>
+	
+		<!-- Featured Categories Section -->
+		<div class="container featured-categories">
+			<h2 class="section-title">Shop by Category</h2>
+			<div class="row">
+				{% for product in products|slice:"4" %}
+				<div class="col-6 col-md-3">
+					<div class="category-card">
+						<div class="category-image" style="background-image: url({{product.imageURL}});"></div>
+						<div class="category-name">{{product.category}}</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+    <div class="store-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="store-title">Our Products</h2>
+                <p class="store-subtitle">Discover our wide range of quality products</p>
+            </div>
+            <div class="col-md-6">
+                <div class="filter-wrapper d-flex justify-content-end align-items-center">
+                    <div class="filter-label mr-2">Filter:</div>
+                    <select class="form-control form-control-sm category-filter mr-2">
+                        <option value="">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="home">Home & Living</option>
+                        <option value="beauty">Beauty</option>
+                    </select>
+                    <select class="form-control form-control-sm sort-filter">
+                        <option value="popularity">Popularity</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row product-grid">
+        {% for product in products %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img class="product-image" src="{{product.imageURL}}" alt="{{product.name}}">
+                    <div class="product-actions">
+                        <button data-product="{{product.id}}" data-action="add" class="btn action-btn add-btn update-cart">
+                            <i class="fas fa-cart-plus"></i>
+                        </button>
+                        <a class="btn action-btn view-btn" href="/product-details/{{product.id}}">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <button class="btn action-btn wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    {% if product.is_new %}
+                    <span class="product-badge new-badge">New</span>
+                    {% endif %}
+                    {% if product.discount %}
+                    <span class="product-badge sale-badge">Sale</span>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">{{product.name}}</h3>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span class="rating-count">(24)</span>
+                    </div>
+                    <div class="product-price-wrapper">
+                        <span class="product-price">${{product.price}}</span>
+                        {% if product.original_price %}
+                        <span class="product-original-price">${{product.original_price}}</span>
+                        {% endif %}
+                    </div>
+                    <div class="product-buttons">
+                        <button data-product="{{product.id}}" data-action="add" class="btn btn-add-cart update-cart">
+                            Add to Cart
+                        </button>
+                        <a class="btn btn-view-details" href="/product-details/{{product.id}}">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% comment %} <div class="pagination-wrapper">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div> {% endcomment %}
+
+    <style>
+        /* Store Page Styles */
+        .store-header {
+            margin-top: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        
+        .store-title {
+            font-weight: 700;
+            color: #343a40;
+            margin-bottom: 5px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .store-title:after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: #ffc107;
+            margin-top: 8px;
+        }
+        
+        .store-subtitle {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+        
+        .filter-wrapper {
+            flex-wrap: wrap;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            color: #343a40;
+        }
+        
+        .category-filter, .sort-filter {
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            background-color: #f8f9fa;
+            max-width: 160px;
+        }
+        
+        /* Product Grid Styles */
+        .product-grid {
+            margin-top: 20px;
+        }
+        
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .product-image-wrapper {
+            position: relative;
+            padding-top: 100%;
+            overflow: hidden;
+        }
+        
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-actions {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: #343a40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            background-color: #ffc107;
+            color: white;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+        
+        .new-badge {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .sale-badge {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #343a40;
+            height: 2.5rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .product-rating {
+            margin-bottom: 10px;
+            color: #ffc107;
+        }
+        
+        .rating-count {
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-left: 5px;
+        }
+        
+        .product-price-wrapper {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #343a40;
+        }
+        
+        .product-original-price {
+            font-size: 1rem;
+            color: #6c757d;
+            text-decoration: line-through;
+            margin-left: 10px;
+        }
+        
+        .product-buttons {
+            margin-top: auto;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-add-cart {
+            flex: 1;
+            background-color: #ffc107;
+            color: #343a40;
+            font-weight: 600;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-add-cart:hover {
+            background-color: #e0a800;
+        }
+        
+        .btn-view-details {
+            flex: 1;
+            background-color: transparent;
+            color: #343a40;
+            font-weight: 600;
+            border: 1px solid #dee2e6;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-view-details:hover {
+            background-color: #f8f9fa;
+            border-color: #343a40;
+        }
+        
+        /* Pagination Styles */
+        .pagination-wrapper {
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .pagination .page-link {
+            color: #343a40;
+            border: 1px solid #dee2e6;
+            margin: 0 3px;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #343a40;
+        }
+        
+        .pagination .page-link:hover {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            color: #ffc107;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 991.98px) {
+            .product-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 767.98px) {
+            .filter-wrapper {
+                margin-top: 15px;
+                justify-content: flex-start !important;
+            }
+            
+            .store-header {
+                text-align: center;
+            }
+            
+            .store-title:after {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    </style>
+
+    <!-- Script for product hover effects -->
+    <script>
+        $(document).ready(function() {
+            // Initialize tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+            
+            // Add hover class for product cards
+            $('.product-card').hover(
+                function() {
+                    $(this).addClass('product-hover');
+                },
+                function() {
+                    $(this).removeClass('product-hover');
+                }
+            );
+            
+            // Wishlist toggle
+            $('.wishlist-btn').click(function() {
+                $(this).find('i').toggleClass('far fas');
+            });
+        });
+    </script>
+{% endblock content %}

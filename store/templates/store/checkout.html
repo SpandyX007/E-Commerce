@@ -1,0 +1,840 @@
+{% extends 'store/landingupdate.html' %}
+{% load static %}
+
+
+  {% block content %}
+  <div class="checkout-container">
+	  <!-- Checkout Header -->
+	  <div class="checkout-header">
+		  <h2 class="checkout-title">Checkout</h2>
+		  <div class="checkout-steps">
+			  <div class="step active">
+				  <div class="step-number">1</div>
+				  <div class="step-label">Shipping</div>
+			  </div>
+			  <div class="step-connector"></div>
+			  <div class="step" id="payment-step">
+				  <div class="step-number">2</div>
+				  <div class="step-label">Payment</div>
+			  </div>
+			  <div class="step-connector"></div>
+			  <div class="step">
+				  <div class="step-number">3</div>
+				  <div class="step-label">Confirmation</div>
+			  </div>
+		  </div>
+	  </div>
+  
+	  <div class="row checkout-content">
+		  <!-- Left Column - Form -->
+		  <div class="col-lg-7">
+			  <div class="checkout-form-card" id="form-wrapper">
+				  <form id="form">
+					  <div id="user-info" class="form-section">
+						  <h3 class="form-section-title">
+							  <i class="fas fa-user-circle mr-2"></i>Personal Information
+						  </h3>
+						  <div class="form-row">
+							  <div class="form-group col-md-6">
+								  <label for="name">Full Name</label>
+								  <input required class="form-control" type="text" name="name" id="name" placeholder="Enter your full name">
+							  </div>
+							  <div class="form-group col-md-6">
+								  <label for="email">Email Address</label>
+								  <input required class="form-control" type="email" name="email" id="email" placeholder="Enter your email address">
+							  </div>
+						  </div>
+						  <div class="form-group">
+							  <label for="phone">Phone Number (Optional)</label>
+							  <input class="form-control" type="tel" name="phone" id="phone" placeholder="Enter your phone number">
+						  </div>
+					  </div>
+					  
+					  <div id="shipping-info" class="form-section">
+						  <h3 class="form-section-title">
+							  <i class="fas fa-shipping-fast mr-2"></i>Shipping Information
+						  </h3>
+						  <div class="form-group">
+							  <label for="address">Address</label>
+							  <input class="form-control" type="text" name="address" id="address" placeholder="Enter your street address">
+						  </div>
+						  <div class="form-row">
+							  <div class="form-group col-md-6">
+								  <label for="city">City</label>
+								  <input class="form-control" type="text" name="city" id="city" placeholder="Enter your city">
+							  </div>
+							  <div class="form-group col-md-6">
+								  <label for="state">State/Province</label>
+								  <input class="form-control" type="text" name="state" id="state" placeholder="Enter your state or province">
+							  </div>
+						  </div>
+						  <div class="form-row">
+							  <div class="form-group col-md-6">
+								  <label for="zipcode">Zip/Postal Code</label>
+								  <input class="form-control" type="text" name="zipcode" id="zipcode" placeholder="Enter your zip code">
+							  </div>
+							  <div class="form-group col-md-6">
+								  <label for="country">Country</label>
+								  <input class="form-control" type="text" name="country" id="country" placeholder="Enter your country">
+							  </div>
+						  </div>
+					  </div>
+  
+					  <div class="form-section">
+						  <h3 class="form-section-title">
+							  <i class="fas fa-truck mr-2"></i>Shipping Method
+						  </h3>
+						  <div class="shipping-options">
+							  <div class="shipping-option">
+								  <input type="radio" name="shipping-method" id="standard" checked>
+								  <label for="standard">
+									  <div class="option-header">
+										  <div class="option-title">Standard Shipping</div>
+										  <div class="option-price">$5.99</div>
+									  </div>
+									  <div class="option-description">Delivery in 5-7 business days</div>
+								  </label>
+							  </div>
+							  <div class="shipping-option">
+								  <input type="radio" name="shipping-method" id="express">
+								  <label for="express">
+									  <div class="option-header">
+										  <div class="option-title">Express Shipping</div>
+										  <div class="option-price">$12.99</div>
+									  </div>
+									  <div class="option-description">Delivery in 2-3 business days</div>
+								  </label>
+							  </div>
+							  <div class="shipping-option">
+								  <input type="radio" name="shipping-method" id="overnight">
+								  <label for="overnight">
+									  <div class="option-header">
+										  <div class="option-title">Overnight Shipping</div>
+										  <div class="option-price">$19.99</div>
+									  </div>
+									  <div class="option-description">Delivery the next business day</div>
+								  </label>
+							  </div>
+						  </div>
+					  </div>
+  
+					  <div class="form-actions">
+						  <a href="{% url 'cart' %}" class="btn btn-outline-secondary">
+							  <i class="fas fa-arrow-left mr-2"></i>Back to Cart
+						  </a>
+						  <button id="form-button" class="btn btn-primary" type="submit">
+							  Continue to Payment<i class="fas fa-arrow-right ml-2"></i>
+						  </button>
+					  </div>
+				  </form>
+			  </div>
+  
+			  <div class="checkout-form-card hidden" id="payment-info">
+				  <h3 class="form-section-title">
+					  <i class="fas fa-credit-card mr-2"></i>Payment Method
+				  </h3>
+				  <div class="payment-options mb-4">
+					  <ul class="nav nav-tabs" id="paymentTab" role="tablist">
+						  <li class="nav-item" role="presentation">
+							  <a class="nav-link active" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="true">
+								  <i class="fab fa-paypal mr-2"></i>PayPal
+							  </a>
+						  </li>
+						  <li class="nav-item" role="presentation">
+							  <a class="nav-link" id="card-tab" data-toggle="tab" href="#card" role="tab" aria-controls="card" aria-selected="false">
+								  <i class="fas fa-credit-card mr-2"></i>Credit Card
+							  </a>
+						  </li>
+					  </ul>
+					  <div class="tab-content payment-tab-content" id="paymentTabContent">
+						  <div class="tab-pane fade show active" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+							  <div class="paypal-content">
+								  <div class="paypal-info">
+									  <p>You will be redirected to PayPal to complete your purchase securely.</p>
+									  <div class="paypal-logos">
+										  <img src="/api/placeholder/120/30" alt="PayPal" class="payment-logo">
+										  <img src="/api/placeholder/40/30" alt="Visa" class="payment-logo">
+										  <img src="/api/placeholder/40/30" alt="MasterCard" class="payment-logo">
+										  <img src="/api/placeholder/40/30" alt="Amex" class="payment-logo">
+									  </div>
+								  </div>
+								  <div id="paypal-button-container" class="mt-4"></div>
+							  </div>
+						  </div>
+						  <div class="tab-pane fade" id="card" role="tabpanel" aria-labelledby="card-tab">
+							  <div class="card-form">
+								  <div class="form-group">
+									  <label for="card-number">Card Number</label>
+									  <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456">
+								  </div>
+								  <div class="form-row">
+									  <div class="form-group col-md-6">
+										  <label for="card-name">Name on Card</label>
+										  <input type="text" class="form-control" id="card-name" placeholder="John Doe">
+									  </div>
+									  <div class="form-group col-md-3">
+										  <label for="card-expiry">Expiry Date</label>
+										  <input type="text" class="form-control" id="card-expiry" placeholder="MM/YY">
+									  </div>
+									  <div class="form-group col-md-3">
+										  <label for="card-cvv">CVV</label>
+										  <input type="text" class="form-control" id="card-cvv" placeholder="123">
+									  </div>
+								  </div>
+								  <button class="btn btn-primary btn-block mt-4">
+									  Complete Payment
+								  </button>
+							  </div>
+						  </div>
+					  </div>
+				  </div>
+				  
+				  <div class="payment-actions">
+					  <button id="back-to-shipping" class="btn btn-outline-secondary">
+						  <i class="fas fa-arrow-left mr-2"></i>Back to Shipping
+					  </button>
+				  </div>
+			  </div>
+		  </div>
+  
+		  <!-- Right Column - Order Summary -->
+		  <div class="col-lg-5">
+			  <div class="order-summary-card">
+				  <h3 class="summary-title">
+					  <i class="fas fa-shopping-cart mr-2"></i>Order Summary
+				  </h3>
+				  
+				  <div class="summary-items">
+					  {% for item in items %}
+					  <div class="summary-item">
+						  <div class="item-image">
+							  <img src="{{item.product.imageURL}}" alt="{{item.product.name}}">
+							  <span class="item-quantity">{{item.quantity}}</span>
+						  </div>
+						  <div class="item-details">
+							  <div class="item-name">{{item.product.name}}</div>
+							  <div class="item-price">${{item.product.price|floatformat:2}}</div>
+						  </div>
+						  <div class="item-total">${{item.get_total|floatformat:2}}</div>
+					  </div>
+					  {% endfor %}
+				  </div>
+				  
+				  <div class="summary-totals">
+					  <div class="summary-row">
+						  <div class="summary-label">Subtotal</div>
+						  <div class="summary-value">${{order.get_cart_total|floatformat:2}}</div>
+					  </div>
+					  <div class="summary-row">
+						  <div class="summary-label">Shipping</div>
+						  <div class="summary-value" id="shipping-cost">$5.99</div>
+					  </div>
+					  <div class="summary-row">
+						  <div class="summary-label">Tax (7%)</div>
+						  <div class="summary-value">${{order.get_tax|floatformat:2}}</div>
+					  </div>
+					  <div class="summary-divider"></div>
+					  <div class="summary-row summary-total">
+						  <div class="summary-label">Total</div>
+						  <div class="summary-value">${{order.get_final_total|floatformat:2}}</div>
+					  </div>
+				  </div>
+				  
+				  <div class="promo-code">
+					  <div class="input-group">
+						  <input type="text" class="form-control" placeholder="Enter promo code">
+						  <div class="input-group-append">
+							  <button class="btn btn-secondary" type="button">Apply</button>
+						  </div>
+					  </div>
+				  </div>
+				  
+				  <div class="secure-checkout">
+					  <div class="secure-icon">
+						  <i class="fas fa-lock"></i>
+					  </div>
+					  <div class="secure-text">
+						  <strong>Secure Checkout</strong>
+						  <p>Your information is protected by 256-bit SSL encryption</p>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+  
+  <style>
+	  /* Checkout Page Styling */
+	  .checkout-container {
+		  padding: 30px 0 60px;
+	  }
+	  
+	  .checkout-header {
+		  text-align: center;
+		  margin-bottom: 40px;
+	  }
+	  
+	  .checkout-title {
+		  font-weight: 700;
+		  color: #343a40;
+		  margin-bottom: 25px;
+		  position: relative;
+		  display: inline-block;
+	  }
+	  
+	  .checkout-title:after {
+		  content: '';
+		  display: block;
+		  width: 50px;
+		  height: 3px;
+		  background-color: #ffc107;
+		  margin: 10px auto 0;
+	  }
+	  
+	  .checkout-steps {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  margin-top: 20px;
+	  }
+	  
+	  .step {
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  position: relative;
+	  }
+	  
+	  .step-number {
+		  width: 34px;
+		  height: 34px;
+		  border-radius: 50%;
+		  background-color: #e9ecef;
+		  color: #6c757d;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  font-weight: 700;
+		  margin-bottom: 8px;
+		  transition: all 0.3s ease;
+	  }
+	  
+	  .step.active .step-number {
+		  background-color: #ffc107;
+		  color: #343a40;
+	  }
+	  
+	  .step-label {
+		  font-size: 0.9rem;
+		  color: #6c757d;
+		  font-weight: 600;
+	  }
+	  
+	  .step.active .step-label {
+		  color: #343a40;
+	  }
+	  
+	  .step-connector {
+		  width: 80px;
+		  height: 2px;
+		  background-color: #e9ecef;
+		  margin: 0 10px;
+		  position: relative;
+		  top: -13px;
+	  }
+	  
+	  /* Form Card Styling */
+	  .checkout-form-card, .order-summary-card {
+		  background-color: #fff;
+		  border-radius: 8px;
+		  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+		  padding: 25px;
+		  margin-bottom: 25px;
+	  }
+	  
+	  .form-section {
+		  margin-bottom: 30px;
+	  }
+	  
+	  .form-section-title {
+		  font-size: 1.2rem;
+		  font-weight: 600;
+		  color: #343a40;
+		  margin-bottom: 20px;
+		  padding-bottom: 10px;
+		  border-bottom: 1px solid #e9ecef;
+	  }
+	  
+	  .form-control {
+		  border-radius: 5px;
+		  padding: 10px 15px;
+		  border: 1px solid #ced4da;
+		  transition: all 0.3s ease;
+	  }
+	  
+	  .form-control:focus {
+		  border-color: #ffc107;
+		  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+	  }
+	  
+	  .form-actions {
+		  margin-top: 30px;
+		  display: flex;
+		  justify-content: space-between;
+	  }
+	  
+	  .btn-primary {
+		  background-color: #ffc107;
+		  border-color: #ffc107;
+		  color: #343a40;
+		  font-weight: 600;
+		  padding: 10px 20px;
+		  border-radius: 5px;
+		  transition: all 0.3s ease;
+	  }
+	  
+	  .btn-primary:hover {
+		  background-color: #e0a800;
+		  border-color: #e0a800;
+	  }
+	  
+	  .btn-outline-secondary {
+		  color: #6c757d;
+		  border-color: #6c757d;
+		  font-weight: 600;
+		  padding: 10px 20px;
+		  border-radius: 5px;
+		  transition: all 0.3s ease;
+	  }
+	  
+	  .btn-outline-secondary:hover {
+		  background-color: #6c757d;
+		  color: #fff;
+	  }
+	  
+	  /* Shipping Options */
+	  .shipping-options {
+		  margin-top: 15px;
+	  }
+	  
+	  .shipping-option {
+		  margin-bottom: 15px;
+		  position: relative;
+	  }
+	  
+	  .shipping-option input[type="radio"] {
+		  position: absolute;
+		  opacity: 0;
+	  }
+	  
+	  .shipping-option label {
+		  display: block;
+		  padding: 15px;
+		  border: 1px solid #dee2e6;
+		  border-radius: 5px;
+		  cursor: pointer;
+		  transition: all 0.3s ease;
+		  margin-bottom: 0;
+	  }
+	  
+	  .shipping-option input[type="radio"]:checked + label {
+		  border-color: #ffc107;
+		  background-color: rgba(255, 193, 7, 0.1);
+	  }
+	  
+	  .shipping-option label:hover {
+		  border-color: #ffc107;
+	  }
+	  
+	  .option-header {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  margin-bottom: 5px;
+	  }
+	  
+	  .option-title {
+		  font-weight: 600;
+		  color: #343a40;
+	  }
+	  
+	  .option-price {
+		  font-weight: 600;
+		  color: #343a40;
+	  }
+	  
+	  .option-description {
+		  font-size: 0.9rem;
+		  color: #6c757d;
+	  }
+	  
+	  /* Payment Section */
+	  .payment-options .nav-tabs {
+		  border-bottom: 1px solid #dee2e6;
+	  }
+	  
+	  .payment-options .nav-tabs .nav-link {
+		  border: 1px solid transparent;
+		  border-top-left-radius: 5px;
+		  border-top-right-radius: 5px;
+		  padding: 10px 20px;
+		  color: #6c757d;
+		  font-weight: 600;
+		  transition: all 0.3s ease;
+	  }
+	  
+	  .payment-options .nav-tabs .nav-link.active {
+		  color: #343a40;
+		  background-color: #fff;
+		  border-color: #dee2e6 #dee2e6 #fff;
+	  }
+	  
+	  .payment-options .nav-tabs .nav-link:hover {
+		  border-color: #e9ecef #e9ecef #dee2e6;
+	  }
+	  
+	  .payment-tab-content {
+		  padding: 20px 0;
+	  }
+	  
+	  .paypal-info {
+		  text-align: center;
+	  }
+	  
+	  .paypal-logos {
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  margin-top: 15px;
+	  }
+	  
+	  .payment-logo {
+		  margin: 0 5px;
+	  }
+	  
+	  .payment-actions {
+		  margin-top: 20px;
+	  }
+	  
+	  /* Order Summary Styling */
+	  .order-summary-card {
+		  background-color: #fff;
+		  border-radius: 8px;
+		  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+		  padding: 25px;
+		  position: sticky;
+		  top: 20px;
+	  }
+	  
+	  .summary-title {
+		  font-size: 1.2rem;
+		  font-weight: 600;
+		  color: #343a40;
+		  margin-bottom: 20px;
+		  padding-bottom: 10px;
+		  border-bottom: 1px solid #e9ecef;
+	  }
+	  
+	  .summary-items {
+		  max-height: 320px;
+		  overflow-y: auto;
+		  margin-bottom: 20px;
+		  padding-right: 5px;
+	  }
+	  
+	  .summary-item {
+		  display: flex;
+		  align-items: center;
+		  padding: 12px 0;
+		  border-bottom: 1px solid #f0f0f0;
+	  }
+	  
+	  .item-image {
+		  position: relative;
+		  width: 60px;
+		  height: 60px;
+		  margin-right: 15px;
+	  }
+	  
+	  .item-image img {
+		  width: 100%;
+		  height: 100%;
+		  object-fit: cover;
+		  border-radius: 5px;
+	  }
+	  
+	  .item-quantity {
+		  position: absolute;
+		  top: -8px;
+		  right: -8px;
+		  background-color: #ffc107;
+		  color: #343a40;
+		  border-radius: 50%;
+		  width: 22px;
+		  height: 22px;
+		  display: flex;
+		  justify-content: center;
+		  align-items: center;
+		  font-size: 0.8rem;
+		  font-weight: 700;
+	  }
+	  
+	  .item-details {
+		  flex: 1;
+	  }
+	  
+	  .item-name {
+		  font-weight: 600;
+		  color: #343a40;
+		  margin-bottom: 3px;
+	  }
+	  
+	  .item-price {
+		  font-size: 0.9rem;
+		  color: #6c757d;
+	  }
+	  
+	  .item-total {
+		  font-weight: 700;
+		  color: #343a40;
+	  }
+	  
+	  .summary-totals {
+		  margin-top: 20px;
+	  }
+	  
+	  .summary-row {
+		  display: flex;
+		  justify-content: space-between;
+		  padding: 8px 0;
+	  }
+	  
+	  .summary-label {
+		  color: #6c757d;
+	  }
+	  
+	  .summary-value {
+		  font-weight: 600;
+		  color: #343a40;
+	  }
+	  
+	  .summary-divider {
+		  height: 1px;
+		  background-color: #e9ecef;
+		  margin: 10px 0;
+	  }
+	  
+	  .summary-total {
+		  font-size: 1.1rem;
+		  font-weight: 700;
+	  }
+	  
+	  .summary-total .summary-label, .summary-total .summary-value {
+		  color: #343a40;
+		  font-weight: 700;
+	  }
+	  
+	  .promo-code {
+		  margin-top: 25px;
+		  margin-bottom: 25px;
+	  }
+	  
+	  .secure-checkout {
+		  display: flex;
+		  align-items: center;
+		  background-color: #f8f9fa;
+		  padding: 15px;
+		  border-radius: 5px;
+		  margin-top: 15px;
+	  }
+	  
+	  .secure-icon {
+		  font-size: 1.5rem;
+		  color: #28a745;
+		  margin-right: 15px;
+	  }
+	  
+	  .secure-text strong {
+		  display: block;
+		  margin-bottom: 3px;
+		  color: #343a40;
+	  }
+	  
+	  .secure-text p {
+		  margin-bottom: 0;
+		  font-size: 0.85rem;
+		  color: #6c757d;
+	  }
+	  
+	  /* Additional classes */
+	  .hidden {
+		  display: none;
+	  }
+	  
+	  /* Media queries */
+	  @media (max-width: 991.98px) {
+		  .checkout-steps {
+			  flex-wrap: wrap;
+		  }
+		  
+		  .order-summary-card {
+			  position: static;
+		  }
+	  }
+	  
+	  @media (max-width: 767.98px) {
+		  .form-actions {
+			  flex-direction: column;
+		  }
+		  
+		  .form-actions .btn {
+			  width: 100%;
+			  margin-bottom: 10px;
+		  }
+		  
+		  .step-connector {
+			  width: 40px;
+		  }
+	  }
+  </style>
+  
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR-CLIENT-ID&currency=USD&disable-funding=credit"></script>
+  
+  <script>
+	  var total = '{{order.get_cart_total}}'
+	  // Render the PayPal button into #paypal-button-container
+	  paypal.Buttons({
+		  style: {
+			  color: 'blue',
+			  shape: 'rect',
+		  },
+  
+		  // Set up the transaction
+		  createOrder: function(data, actions) {
+			  return actions.order.create({
+				  purchase_units: [{
+					  amount: {
+						  value: parseFloat(total).toFixed(2)
+					  }
+				  }]
+			  });
+		  },
+  
+		  // Finalize the transaction
+		  onApprove: function(data, actions) {
+			  return actions.order.capture().then(function(details) {
+				  // Show a success message to the buyer
+				  submitFormData()
+			  });
+		  }
+	  }).render('#paypal-button-container');
+  </script>
+  
+  <script type="text/javascript">
+	  $(document).ready(function() {
+		  // Update shipping cost and activate shipping option based on selection
+		  $('.shipping-option input[type="radio"]').change(function() {
+			  var shippingCost = '';
+			  var selectedOption = $(this).attr('id');
+			  
+			  if (selectedOption === 'standard') {
+				  shippingCost = '$5.99';
+			  } else if (selectedOption === 'express') {
+				  shippingCost = '$12.99';
+			  } else if (selectedOption === 'overnight') {
+				  shippingCost = '$19.99';
+			  }
+			  
+			  $('#shipping-cost').text(shippingCost);
+		  });
+		  
+		  // Back to shipping button functionality
+		  $('#back-to-shipping').click(function() {
+			  $('#payment-info').addClass('hidden');
+			  $('#form-wrapper').removeClass('hidden');
+			  $('#payment-step').removeClass('active');
+		  });
+	  });
+  
+	  var shipping = '{{order.shipping}}'
+  
+	  if (shipping == 'False'){
+		  document.getElementById('shipping-info').innerHTML = ''
+	  }
+  
+	  if (user != 'AnonymousUser'){
+		  document.getElementById('user-info').innerHTML = ''
+	  }
+  
+	  if (shipping == 'False' && user != 'AnonymousUser'){
+		  //Hide entire form if user is logged in and shipping is false
+		  document.getElementById('form-wrapper').classList.add("hidden");
+		  //Show payment if logged in user wants to buy an item that does not require shipping
+		  document.getElementById('payment-info').classList.remove("hidden");
+		  document.getElementById('payment-step').classList.add("active");
+	  }
+  
+	  var form = document.getElementById('form')
+	  form.addEventListener('submit', function(e){
+		  e.preventDefault()
+		  console.log('Form Submitted...')
+		  document.getElementById('form-button').classList.add("hidden");
+		  document.getElementById('form-wrapper').classList.add("hidden");
+		  document.getElementById('payment-info').classList.remove("hidden");
+		  document.getElementById('payment-step').classList.add("active");
+	  })
+  
+	  function submitFormData(){
+		  console.log('Payment button clicked')
+  
+		  var userFormData = {
+			  'name':null,
+			  'email':null,
+			  'total':total,
+		  }
+  
+		  var shippingInfo = {
+			  'address':null,
+			  'city':null,
+			  'state':null,
+			  'zipcode':null,
+		  }
+  
+		  if (shipping != 'False'){
+			  shippingInfo.address = form.address.value
+			  shippingInfo.city = form.city.value
+			  shippingInfo.state = form.state.value
+			  shippingInfo.zipcode = form.zipcode.value
+		  }
+  
+		  if (user == 'AnonymousUser'){
+			  userFormData.name = form.name.value
+			  userFormData.email = form.email.value
+		  }
+  
+		  console.log('Shipping Info:', shippingInfo)
+		  console.log('User Info:', userFormData)
+  
+		  var url = "/process_order/"
+		  fetch(url, {
+			  method:'POST',
+			  headers:{
+				  'Content-Type':'application/json',
+				  'X-CSRFToken':csrftoken,
+			  }, 
+			  body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
+			  
+		  })
+		  .then((response) => response.json())
+		  .then((data) => {
+			  console.log('Success:', data);
+			  alert('Transaction completed');  
+  
+			  cart = {}
+			  document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+  
+			  window.location.href = "{% url 'store' %}"
+		  })
+	  }
+  </script>
+  {% endblock content %}

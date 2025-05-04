@@ -1,0 +1,88 @@
+{% extends 'store/landingupdate.html' %}
+{% load static %}
+
+{% block content %}
+<div class="search-results-container my-4">
+    <h2 class="section-title">
+        {% if query %}
+            Search Results for "{{ query }}"
+        {% else %}
+            Search Results
+        {% endif %}
+    </h2>
+
+    {% if products %}
+        <div class="row">
+            {% for product in products %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card product-card h-100">
+                        <img class="card-img-top" src="{{ product.imageURL }}" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ product.name }}</h4>
+                            <h5>${{ product.price|floatformat:2 }}</h5>
+                            <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                            <a class="btn btn-outline-success" href="/product-details/{{product.id}}">View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            {% if query %}
+                <p>No products found matching "{{ query }}"</p>
+            {% else %}
+                <p>Please enter a search term</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .search-results-container {
+        min-height: 400px;
+    }
+    
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .card-img-top {
+        height: 200px;
+        object-fit: contain;
+        padding: 10px;
+    }
+    
+    .card-footer {
+        background-color: white;
+        border-top: none;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .section-title {
+        margin-bottom: 30px;
+        position: relative;
+        text-align: center;
+        font-weight: 700;
+        color: #343a40;
+    }
+    
+    .section-title:after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 3px;
+        background-color: #ffc107;
+        margin: 15px auto 0;
+    }
+</style>
+{% endblock content %}
