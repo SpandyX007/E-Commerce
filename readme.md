@@ -1,6 +1,6 @@
 # Django eCommerce website
 
-Basic django eCommerce website with checkout guest checkout and paypal integration
+Basic django eCommerce website with checkout guest checkout 
 
 Installation:
 
@@ -9,3 +9,5 @@ Installation:
 3. Run server: `python manage.py runserver`
 
 <img src="./static/images/demo.png"/>
+<img src="./static/images/demo3.png"/>
+<img src="./static/images/demo4.png"/>

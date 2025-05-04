@@ -176,10 +176,11 @@
     <h3 class="recommended-title">Recommended For You</h3>
     <div class="row">
       <!-- Add your recommended products here -->
+      {% for product in products %}
       <div class="col-6 col-md-3 mb-4">
         <div class="product-card">
           <div class="product-image">
-            <img src="{% static 'images/placeholder.png' %}" alt="Recommended Product">
+            <img src="{{product.imageURL}}" alt="Recommended Product">
           </div>
           <div class="product-details">
             <h5 class="product-name">Product Name</h5>
@@ -188,7 +189,8 @@
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      {% endfor %}
+      {% comment %} <div class="col-6 col-md-3 mb-4">
         <div class="product-card">
           <div class="product-image">
             <img src="{% static 'images/placeholder.png' %}" alt="Recommended Product">
@@ -223,7 +225,7 @@
             <button class="btn btn-sm btn-primary mt-2">Add to Cart</button>
           </div>
         </div>
-      </div>
+      </div> {% endcomment %}
     </div>
   </div>
 </div>
