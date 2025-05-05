@@ -251,6 +251,7 @@
             color: #343a40;
             background-color: white;
         }
+
     </style>
 
     <script type="text/javascript">
@@ -321,12 +322,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{% url "deals" %}">
                             <i class="fas fa-tags mr-1"></i>Deals
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="{% url "categories" %}">
                             <i class="fas fa-list-alt mr-1"></i>Categories
                         </a>
                     </li>
@@ -343,8 +344,8 @@
                     </button>
                 </form>
                 <div class="d-flex align-items-center">
-                    <a href="#" class="btn btn-auth btn-login">Login</a>
-                    <a href="#" class="d-none d-md-block btn btn-auth btn-signup">Sign Up</a>
+                    <a href="{% url "login" %}" class="btn btn-auth btn-login">Login</a>
+                    <a href="{% url "login" %}" class="d-none d-md-block btn btn-auth btn-signup">Sign Up</a>
                     <div id="cart-wrapper">
                         <a href="{% url 'cart' %}">
                             <img id="cart-icon" src="{% static 'images/cart.png' %}">

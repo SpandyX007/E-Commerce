@@ -1,0 +1,925 @@
+{% extends 'store/landingupdate.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Category Page -->
+<div id="category-products-page">
+    <!-- Header -->
+    <div class="store-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="store-title">Explore by Categories</h2>
+                <p class="store-subtitle">Discover quality appliances, decor, and essentials to transform your lifestyle</p>
+            </div>
+            <div class="col-md-6">
+                <div class="filter-wrapper d-flex justify-content-end align-items-center">
+                    <div class="filter-label mr-2">Sort by:</div>
+                    <select class="form-control form-control-sm sort-filter mr-2">
+                        <option value="popularity">Most Popular</option>
+                        <option value="newest">Newest First</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Top Rated</option>
+                    </select>
+                    <div class="filter-label mr-2">Brand:</div>
+                    <select class="form-control form-control-sm category-filter mr-2">
+                        <option value="">All Brands</option>
+                        <option value="kitchenaid">KitchenAid</option>
+                        <option value="cuisinart">Cuisinart</option>
+                        <option value="dyson">Dyson</option>
+                        <option value="ninja">Ninja</option>
+                        <option value="other">Other Brands</option>
+                    </select>
+                    <div class="filter-label mr-2">Price:</div>
+                    <select class="form-control form-control-sm sort-filter">
+                        <option value="all">All Prices</option>
+                        <option value="under-25">Under $25</option>
+                        <option value="25-50">$25 - $50</option>
+                        <option value="50-100">$50 - $100</option>
+                        <option value="100-200">$100 - $200</option>
+                        <option value="over-200">Over $200</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-wrapper mt-3">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search products...">
+                <div class="input-group-append">
+                    <button class="btn btn-search" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Navigation Tabs -->
+    <div class="category-tabs-wrapper mb-4">
+        <ul class="nav nav-tabs category-tabs" id="categoryTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all" role="tab" aria-controls="all" aria-selected="true">
+                    <i class="fas fa-th-large"></i> All
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="electronics-tab" data-toggle="tab" href="#electronics" role="tab" aria-controls="electronics" aria-selected="false">
+                    <i class="fas fa-tv"></i> Electronics
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="fashion-tab" data-toggle="tab" href="#fashion" role="tab" aria-controls="fashion" aria-selected="false">
+                    <i class="fas fa-tshirt"></i> Fashion
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="false">
+                    <i class="fas fa-home"></i> Home & Kitchen
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="beauty-tab" data-toggle="tab" href="#beauty" role="tab" aria-controls="beauty" aria-selected="false">
+                    <i class="fas fa-spa"></i> Beauty
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="toys-tab" data-toggle="tab" href="#toys" role="tab" aria-controls="toys" aria-selected="false">
+                    <i class="fas fa-gamepad"></i> Toys & Games
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Category Tab Content -->
+    <div class="tab-content" id="categoryTabContent">
+        <!-- All Products Tab -->
+        <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+            <div class="row product-grid">
+                {% for product in products %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img class="product-image" src="{{product.imageURL}}" alt="{{product.name}}">
+                            <div class="product-actions">
+                                <button data-product="{{product.id}}" data-action="add" class="btn action-btn add-btn update-cart">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                                <a class="btn action-btn view-btn" href="/product-details/{{product.id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn action-btn wishlist-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            {% if product.discount %}
+                            <span class="product-badge sale-badge">-20%</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{product.name}}</h3>
+                            <p class="product-category">{{product.category}}</p>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price-wrapper">
+                                <span class="product-price">${{product.price}}</span>
+                                {% if product.discount %}
+                                <span class="product-original-price">${{product.original_price}}</span>
+                                {% endif %}
+                            </div>
+                            <p class="savings">You save: $20.00 (20%)</p>
+                            <div class="product-buttons">
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-add-cart update-cart">
+                                    Add to Cart
+                                </button>
+                                <a class="btn btn-view-details" href="/product-details/{{product.id}}">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Electronics Tab -->
+        <div class="tab-pane fade" id="electronics" role="tabpanel" aria-labelledby="electronics-tab">
+            <div class="category-header mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="category-title">Electronics</h3>
+                    <a href="/category/electronics" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <p class="category-description">Explore the latest gadgets, smart devices, and tech accessories</p>
+            </div>
+            
+            <div class="row product-grid">
+                {% for product in products %}
+                {% if product.category == 'Electronics' %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img class="product-image" src="{{product.imageURL}}" alt="{{product.name}}">
+                            <div class="product-actions">
+                                <button data-product="{{product.id}}" data-action="add" class="btn action-btn add-btn update-cart">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                                <a class="btn action-btn view-btn" href="/product-details/{{product.id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn action-btn wishlist-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            {% if product.discount %}
+                            <span class="product-badge sale-badge">-20%</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{product.name}}</h3>
+                            <p class="product-category">{{product.category}}</p>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price-wrapper">
+                                <span class="product-price">${{product.price}}</span>
+                                {% if product.discount %}
+                                <span class="product-original-price">${{product.original_price}}</span>
+                                {% endif %}
+                            </div>
+                            <p class="savings">You save: $20.00 (20%)</p>
+                            <div class="product-buttons">
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-add-cart update-cart">
+                                    Add to Cart
+                                </button>
+                                <a class="btn btn-view-details" href="/product-details/{{product.id}}">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Fashion Tab -->
+        <div class="tab-pane fade" id="fashion" role="tabpanel" aria-labelledby="fashion-tab">
+            <div class="category-header mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="category-title">Fashion</h3>
+                    <a href="/category/fashion" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <p class="category-description">Trendy clothing, shoes, and accessories for every style</p>
+            </div>
+            
+            <div class="row product-grid">
+                {% for product in products %}
+                {% if product.category == 'Fashion' %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img class="product-image" src="{{product.imageURL}}" alt="{{product.name}}">
+                            <div class="product-actions">
+                                <button data-product="{{product.id}}" data-action="add" class="btn action-btn add-btn update-cart">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                                <a class="btn action-btn view-btn" href="/product-details/{{product.id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn action-btn wishlist-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            {% if product.discount %}
+                            <span class="product-badge sale-badge">-20%</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{product.name}}</h3>
+                            <p class="product-category">{{product.category}}</p>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price-wrapper">
+                                <span class="product-price">${{product.price}}</span>
+                                {% if product.discount %}
+                                <span class="product-original-price">${{product.original_price}}</span>
+                                {% endif %}
+                            </div>
+                            <p class="savings">You save: $20.00 (20%)</p>
+                            <div class="product-buttons">
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-add-cart update-cart">
+                                    Add to Cart
+                                </button>
+                                <a class="btn btn-view-details" href="/product-details/{{product.id}}">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Home & Kitchen Tab -->
+        <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="category-header mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="category-title">Home & Kitchen</h3>
+                    <a href="/category/home-kitchen" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <p class="category-description">Appliances, décor, and essentials for your living space</p>
+            </div>
+            
+            <div class="row product-grid">
+                {% for product in products %}
+                {% if product.category == 'Home & Kitchen' %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img class="product-image" src="{{product.imageURL}}" alt="{{product.name}}">
+                            <div class="product-actions">
+                                <button data-product="{{product.id}}" data-action="add" class="btn action-btn add-btn update-cart">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                                <a class="btn action-btn view-btn" href="/product-details/{{product.id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn action-btn wishlist-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            {% if product.discount %}
+                            <span class="product-badge sale-badge">-20%</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{product.name}}</h3>
+                            <p class="product-category">{{product.category}}</p>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price-wrapper">
+                                <span class="product-price">${{product.price}}</span>
+                                {% if product.discount %}
+                                <span class="product-original-price">${{product.original_price}}</span>
+                                {% endif %}
+                            </div>
+                            <p class="savings">You save: $20.00 (20%)</p>
+                            <div class="product-buttons">
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-add-cart update-cart">
+                                    Add to Cart
+                                </button>
+                                <a class="btn btn-view-details" href="/product-details/{{product.id}}">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Beauty Tab -->
+        <div class="tab-pane fade" id="beauty" role="tabpanel" aria-labelledby="beauty-tab">
+            <div class="category-header mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="category-title">Beauty</h3>
+                    <a href="/category/beauty" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <p class="category-description">Skincare, makeup, fragrances, and personal care products</p>
+            </div>
+            
+            <div class="row product-grid">
+                {% for product in products %}
+                {% if product.category == 'Beauty' %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img class="product-image" src="{{product.imageURL}}" alt="{{product.name}}">
+                            <div class="product-actions">
+                                <button data-product="{{product.id}}" data-action="add" class="btn action-btn add-btn update-cart">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                                <a class="btn action-btn view-btn" href="/product-details/{{product.id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn action-btn wishlist-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            {% if product.discount %}
+                            <span class="product-badge sale-badge">-20%</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{product.name}}</h3>
+                            <p class="product-category">{{product.category}}</p>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price-wrapper">
+                                <span class="product-price">${{product.price}}</span>
+                                {% if product.discount %}
+                                <span class="product-original-price">${{product.original_price}}</span>
+                                {% endif %}
+                            </div>
+                            <p class="savings">You save: $20.00 (20%)</p>
+                            <div class="product-buttons">
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-add-cart update-cart">
+                                    Add to Cart
+                                </button>
+                                <a class="btn btn-view-details" href="/product-details/{{product.id}}">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Toys & Games Tab -->
+        <div class="tab-pane fade" id="toys" role="tabpanel" aria-labelledby="toys-tab">
+            <div class="category-header mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="category-title">Toys & Games</h3>
+                    <a href="/category/toys-games" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <p class="category-description">Fun activities, board games, toys and entertainment for all ages</p>
+            </div>
+            
+            <div class="row product-grid">
+                {% for product in products %}
+                {% if product.category == 'Toys & Games' %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="product-card">
+                        <div class="product-image-wrapper">
+                            <img class="product-image" src="{{product.imageURL}}" alt="{{product.name}}">
+                            <div class="product-actions">
+                                <button data-product="{{product.id}}" data-action="add" class="btn action-btn add-btn update-cart">
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                                <a class="btn action-btn view-btn" href="/product-details/{{product.id}}">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn action-btn wishlist-btn">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                            {% if product.discount %}
+                            <span class="product-badge sale-badge">-20%</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">{{product.name}}</h3>
+                            <p class="product-category">{{product.category}}</p>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-count">(24)</span>
+                            </div>
+                            <div class="product-price-wrapper">
+                                <span class="product-price">${{product.price}}</span>
+                                {% if product.discount %}
+                                <span class="product-original-price">${{product.original_price}}</span>
+                                {% endif %}
+                            </div>
+                            <p class="savings">You save: $20.00 (20%)</p>
+                            <div class="product-buttons">
+                                <button data-product="{{product.id}}" data-action="add" class="btn btn-add-cart update-cart">
+                                    Add to Cart
+                                </button>
+                                <a class="btn btn-view-details" href="/product-details/{{product.id}}">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="pagination-wrapper">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<style>
+    /* Store Header Styles */
+    .store-header {
+        margin-top: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e1e1e1;
+    }
+    
+    .store-title {
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 5px;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .store-title:after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 3px;
+        background-color: #ffc107;
+        margin-top: 8px;
+    }
+    
+    .store-subtitle {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+    
+    .filter-wrapper {
+        flex-wrap: wrap;
+    }
+    
+    .filter-label {
+        font-weight: 600;
+        color: #343a40;
+    }
+    
+    .category-filter, .sort-filter {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        background-color: #f8f9fa;
+        max-width: 160px;
+    }
+    
+    .search-wrapper {
+        max-width: 100%;
+    }
+    
+    .btn-search {
+        background-color: #ffc107;
+        color: #343a40;
+        border-color: #ffc107;
+    }
+    
+    .btn-search:hover {
+        background-color: #e0a800;
+        border-color: #e0a800;
+    }
+    
+    /* Category Tabs Styles */
+    .category-tabs-wrapper {
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .category-tabs {
+        border-bottom: none;
+    }
+    
+    .category-tabs .nav-link {
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: #6c757d;
+        font-weight: 600;
+        padding: 10px 20px;
+        margin-right: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .category-tabs .nav-link i {
+        margin-right: 8px;
+    }
+    
+    .category-tabs .nav-link:hover {
+        color: #ffc107;
+        border-bottom-color: #ffc107;
+        background-color: transparent;
+    }
+    
+    .category-tabs .nav-link.active {
+        color: #343a40;
+        border-bottom-color: #ffc107;
+        background-color: transparent;
+    }
+    
+    /* Category Header Styles */
+    .category-header {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e1e1e1;
+    }
+    
+    .category-title {
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 5px;
+    }
+    
+    .category-description {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+    
+    /* Product Grid Styles */
+    .product-grid {
+        margin-top: 20px;
+    }
+    
+    .product-card {
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .product-image-wrapper {
+        position: relative;
+        padding-top: 100%;
+        overflow: hidden;
+    }
+    
+    .product-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .product-image {
+        transform: scale(1.05);
+    }
+    
+    .product-actions {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .product-card:hover .product-actions {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: white;
+        color: #343a40;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 5px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        transition: all 0.2s ease;
+    }
+    
+    .action-btn:hover {
+        background-color: #ffc107;
+        color: white;
+    }
+    
+    .product-badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 1;
+    }
+    
+    .sale-badge {
+        background-color: #dc3545;
+        color: white;
+    }
+    
+    .product-info {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+    
+    .product-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #343a40;
+        height: 2.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    
+    .product-category {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    
+    .product-rating {
+        margin-bottom: 10px;
+        color: #ffc107;
+    }
+    
+    .rating-count {
+        color: #6c757d;
+        font-size: 0.85rem;
+        margin-left: 5px;
+    }
+    
+    .product-price-wrapper {
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .product-price {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #343a40;
+    }
+    
+    .product-original-price {
+        font-size: 1rem;
+        color: #6c757d;
+        text-decoration: line-through;
+        margin-left: 10px;
+    }
+    
+    .savings {
+        color: #28a745;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+    
+    .product-buttons {
+        margin-top: auto;
+        display: flex;
+        gap: 8px;
+    }
+    
+    .btn-add-cart {
+        flex: 1;
+        background-color: #ffc107;
+        color: #343a40;
+        font-weight: 600;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-add-cart:hover {
+        background-color: #e0a800;
+    }
+    
+    .btn-view-details {
+        flex: 1;
+        background-color: transparent;
+        color: #343a40;
+        font-weight: 600;
+        border: 1px solid #dee2e6;
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-view-details:hover {
+        background-color: #f8f9fa;
+        border-color: #343a40;
+    }
+    
+    /* Category Featured Section */
+    .category-featured {
+        margin-bottom: 30px;
+    }
+    
+    .featured-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #343a40;
+        position: relative;
+        display: inline-block;
+    }
+    
+    .featured-title:after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 3px;
+        background-color: #ffc107;
+        margin-top: 5px;
+    }
+    
+    /* Pagination Styles */
+    .pagination-wrapper {
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+    
+    .pagination .page-link {
+        color: #343a40;
+        border: 1px solid #dee2e6;
+        margin: 0 3px;
+        border-radius: 5px;
+        transition: all 0.2s ease;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #343a40;
+    }
+    
+    .pagination .page-link:hover {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+        color: #ffc107;
+    }
+    
+    /* Empty Category State */
+    .empty-category {
+        text-align: center;
+        padding: 40px 20px;
+    }
+    
+    .empty-category-icon {
+        font-size: 3rem;
+        color: #dee2e6;
+        margin-bottom: 15px;
+    }
+    
+    .empty-category-title {
+        font-size: 1.2rem;
+        color: #343a40;
+        margin-bottom: 10px;
+    }
+    
+    .empty-category-message {
+        color: #6c757d;
+        margin-bottom: 20px;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 991.98px) {
+        .product-buttons {
+            flex-direction: column;
+        }
+        
+        .category-tabs .nav-link {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+    }
+    
+    @media (max-width: 767.98px) {
+        .filter-wrapper {
+            margin-top: 15px;
+            justify-content: flex-start !important;
+        }
+        
+        .store-header {
+            text-align: center;
+        }
+        
+        .store-title:after {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .category-tabs {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .category-tabs::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Edge */
+        }
+        
+        .category-tabs .nav-item {
+            white-space: nowrap;
+        }
+    }
+    
+    @media (max-width: 575.98px) {
+        .product-card {
+            max-width: 320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+</style>
+{% endblock content %}

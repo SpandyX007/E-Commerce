@@ -1,0 +1,576 @@
+{% extends 'store/landingupdate.html' %}
+{% load static %}
+{% block content %}
+    
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        
+        /* Authentication Pages Styling */
+        .auth-container {
+            padding: 50px 0;
+            min-height: calc(100vh - 240px);
+        }
+        
+        .auth-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .auth-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ffc107, #ffb400);
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .auth-title {
+            font-weight: 700;
+            color: #343a40;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .auth-subtitle {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+        
+        .social-login {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 10px;
+            background-color: #f8f9fa;
+            color: #343a40;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .social-btn.facebook {
+            background-color: #3b5998;
+            color: white;
+        }
+        
+        .social-btn.google {
+            background-color: #db4437;
+            color: white;
+        }
+        
+        .social-btn.twitter {
+            background-color: #1da1f2;
+            color: white;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #dee2e6;
+        }
+        
+        .divider-text {
+            position: relative;
+            background-color: #fff;
+            padding: 0 15px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            border-radius: 5px;
+            padding: 12px 15px;
+            height: auto;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #ffc107;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+        
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+            color: #6c757d;
+        }
+        
+        .auth-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #ffc107;
+            border: none;
+            border-radius: 5px;
+            color: #343a40;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .auth-btn:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .auth-link {
+            color: #ffc107;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-link:hover {
+            color: #e0a800;
+            text-decoration: none;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .custom-checkbox .custom-control-label::before {
+            border-radius: 3px;
+        }
+        
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        
+        .custom-checkbox .custom-control-input:focus ~ .custom-control-label::before {
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+        
+        .password-toggle {
+            cursor: pointer;
+        }
+        
+        .form-feedback {
+            margin-top: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .form-feedback.valid {
+            color: #28a745;
+        }
+        
+        .form-feedback.invalid {
+            color: #dc3545;
+        }
+        
+        .strength-meter {
+            height: 5px;
+            margin-top: 5px;
+            border-radius: 3px;
+            background-color: #e9ecef;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .strength-meter-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .strength-meter-fill.weak {
+            width: 30%;
+            background-color: #dc3545;
+        }
+        
+        .strength-meter-fill.medium {
+            width: 70%;
+            background-color: #ffc107;
+        }
+        
+        .strength-meter-fill.strong {
+            width: 100%;
+            background-color: #28a745;
+        }
+        
+        /* Media queries */
+        @media (max-width: 576px) {
+            .auth-card {
+                padding: 20px;
+            }
+            
+            .auth-title {
+                font-size: 1.5rem;
+            }
+            
+            .social-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+
+        
+    </style>
+
+    <!-- Login Page -->
+    <div class="auth-container" id="login-container" style="display: block;">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2 class="auth-title">Welcome Back</h2>
+                    <p class="auth-subtitle">Log in to your account to continue shopping</p>
+                </div>
+                
+                <div class="social-login">
+                    <a href="#" class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-btn google">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-btn twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+                
+                <div class="divider">
+                    <span class="divider-text">OR</span>
+                </div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </div>
+                            <input type="email" class="form-control" id="login-email" placeholder="Email Address" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </div>
+                            <input type="password" class="form-control" id="login-password" placeholder="Password" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text password-toggle" onclick="togglePassword('login-password')">
+                                    <i class="fas fa-eye" id="login-eye-icon"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="remember-me">
+                            <label class="custom-control-label" for="remember-me">Remember me</label>
+                        </div>
+                        <a href="#" class="auth-link">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    Don't have an account? <a href="#" class="auth-link" onclick="toggleForms()">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Signup Page -->
+    <div class="auth-container" id="signup-container" style="display: none;">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2 class="auth-title">Create Account</h2>
+                    <p class="auth-subtitle">Sign up to start shopping with us</p>
+                </div>
+                
+                <div class="social-login">
+                    <a href="#" class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-btn google">
+                        <i class="fab fa-google"></i>
+                    </a>
+                    <a href="#" class="social-btn twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+                
+                <div class="divider">
+                    <span class="divider-text">OR</span>
+                </div>
+                
+                <form id="signup-form">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" id="first-name" placeholder="First Name" required>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" id="last-name" placeholder="Last Name" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </div>
+                            <input type="email" class="form-control" id="signup-email" placeholder="Email Address" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-phone"></i>
+                                </span>
+                            </div>
+                            <input type="tel" class="form-control" id="phone" placeholder="Phone Number (Optional)">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </div>
+                            <input type="password" class="form-control" id="signup-password" placeholder="Password" required oninput="checkPasswordStrength()">
+                            <div class="input-group-append">
+                                <span class="input-group-text password-toggle" onclick="togglePassword('signup-password')">
+                                    <i class="fas fa-eye" id="signup-eye-icon"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="strength-meter">
+                            <div class="strength-meter-fill" id="strength-meter-fill"></div>
+                        </div>
+                        <div class="form-feedback" id="password-feedback"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                            </div>
+                            <input type="password" class="form-control" id="confirm-password" placeholder="Confirm Password" required oninput="checkPasswordMatch()">
+                        </div>
+                        <div class="form-feedback" id="confirm-feedback"></div>
+                    </div>
+                    
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" class="custom-control-input" id="terms" required>
+                        <label class="custom-control-label" for="terms">
+                            I agree to the <a href="#" class="auth-link">Terms of Service</a> and <a href="#" class="auth-link">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="auth-btn">
+                        <i class="fas fa-user-plus mr-2"></i>Create Account
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    Already have an account? <a href="#" class="auth-link" onclick="toggleForms()">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    
+    <script>
+        function toggleForms() {
+            const loginContainer = document.getElementById('login-container');
+            const signupContainer = document.getElementById('signup-container');
+            
+            if (loginContainer.style.display === 'block') {
+                loginContainer.style.display = 'none';
+                signupContainer.style.display = 'block';
+            } else {
+                loginContainer.style.display = 'block';
+                signupContainer.style.display = 'none';
+            }
+        }
+        
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(inputId === 'login-password' ? 'login-eye-icon' : 'signup-eye-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+        
+        function checkPasswordStrength() {
+            const password = document.getElementById('signup-password').value;
+            const strengthMeter = document.getElementById('strength-meter-fill');
+            const feedback = document.getElementById('password-feedback');
+            
+            // Check password strength
+            let strength = 0;
+            const patterns = [
+                /[a-z]/, // lowercase
+                /[A-Z]/, // uppercase
+                /[0-9]/, // numbers
+                /[^A-Za-z0-9]/ // special characters
+            ];
+            
+            // Add strength for each pattern matched
+            patterns.forEach(pattern => {
+                if (pattern.test(password)) {
+                    strength += 1;
+                }
+            });
+            
+            // Add strength for length
+            if (password.length >= 8) {
+                strength += 1;
+            }
+            
+            // Update UI based on strength
+            if (password.length === 0) {
+                strengthMeter.className = 'strength-meter-fill';
+                strengthMeter.style.width = '0%';
+                feedback.textContent = '';
+                feedback.className = 'form-feedback';
+            } else if (strength < 3) {
+                strengthMeter.className = 'strength-meter-fill weak';
+                feedback.textContent = 'Weak password';
+                feedback.className = 'form-feedback invalid';
+            } else if (strength < 5) {
+                strengthMeter.className = 'strength-meter-fill medium';
+                feedback.textContent = 'Medium strength password';
+                feedback.className = 'form-feedback';
+            } else {
+                strengthMeter.className = 'strength-meter-fill strong';
+                feedback.textContent = 'Strong password';
+                feedback.className = 'form-feedback valid';
+            }
+        }
+        
+        function checkPasswordMatch() {
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const feedback = document.getElementById('confirm-feedback');
+            
+            if (confirmPassword.length === 0) {
+                feedback.textContent = '';
+                feedback.className = 'form-feedback';
+            } else if (password === confirmPassword) {
+                feedback.textContent = 'Passwords match';
+                feedback.className = 'form-feedback valid';
+            } else {
+                feedback.textContent = 'Passwords do not match';
+                feedback.className = 'form-feedback invalid';
+            }
+        }
+        
+        // Form submission
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically handle the login logic with server
+            alert('Login functionality would be processed here');
+        });
+        
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically handle the signup logic with server
+            alert('Signup functionality would be processed here');
+        });
+    </script>
+    {% endblock content %}

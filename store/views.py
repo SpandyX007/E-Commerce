@@ -21,6 +21,20 @@ def productdetails(request,item_id):
 	context = {'product':product}
 	return render(request, 'store/productview.html', context)
 
+def login(request):
+	return render(request,'store/login.html')
+
+def signup(request):
+	return render(request,'store/login.html')
+
+def deals(request):
+	products = Product.objects.all()
+	return render(request,'store/deals.html',{'products':products})
+
+def categories(request):
+	products = Product.objects.all()
+	return render(request,'store/categories.html',{'products':products})
+
 def search_products(request):
 	if request.method=="GET":
 		name = request.GET.get('search')

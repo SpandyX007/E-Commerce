@@ -1,0 +1,460 @@
+{% extends 'store/landingupdate.html' %}
+{% load static %}
+{% block content %}
+    
+    <style>
+        /* Custom styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        /* Deals and Categories Pages Styling */
+        .page-header {
+            background: linear-gradient(135deg, #ffc107, #ffb400);
+            padding: 40px 0;
+            margin-bottom: 30px;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-title {
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page-subtitle {
+            color: #fff;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-bar {
+            background-color: #fff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            color: #343a40;
+            margin-right: 10px;
+        }
+        
+        .filter-dropdown {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 8px 12px;
+            color: #495057;
+            background-color: #fff;
+            margin-right: 15px;
+        }
+        
+        .filter-dropdown:focus {
+            border-color: #ffc107;
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+        
+        .search-bar {
+            position: relative;
+        }
+        
+        .search-input {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 8px 15px;
+            padding-right: 40px;
+            width: 100%;
+        }
+        
+        .search-input:focus {
+            border-color: #ffc107;
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+        }
+        
+        .search-btn:hover {
+            color: #ffc107;
+        }
+        
+        /* Cards styling */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+        }
+        
+        .card-img-top {
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+        
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ffc107;
+            color: #343a40;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            color: #343a40;
+            margin-bottom: 8px;
+            font-size: 1.25rem;
+        }
+        
+        .card-category {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .card-text {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .price-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .current-price {
+            font-weight: 700;
+            color: #343a40;
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+        
+        .original-price {
+            color: #6c757d;
+            text-decoration: line-through;
+            font-size: 0.95rem;
+        }
+        
+        .savings {
+            color: #28a745;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .card-footer {
+            background-color: #fff;
+            border-top: 1px solid #f0f0f0;
+            padding: 15px 20px;
+        }
+        
+        .btn-add-cart {
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-add-cart:hover {
+            background-color: #ffc107;
+            color: #343a40;
+        }
+        
+        .btn-wishlist {
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            color: #6c757d;
+            border-radius: 5px;
+            width: 40px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-wishlist:hover {
+            background-color: #f8f9fa;
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .btn-quick-view {
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            color: #6c757d;
+            border-radius: 5px;
+            width: 40px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-quick-view:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+            border-color: #007bff;
+        }
+        
+        /* Category cards */
+        .category-card {
+            position: relative;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        
+        .category-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+        
+        .category-card:hover .category-img {
+            transform: scale(1.05);
+        }
+        
+        .category-card:hover .category-overlay {
+            background: linear-gradient(to bottom, rgba(255,193,7,0.3), rgba(0,0,0,0.8));
+        }
+        
+        .category-title {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .category-items {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+        
+        .category-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Pagination */
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .page-link {
+            color: #343a40;
+            border: 1px solid #dee2e6;
+            margin: 0 3px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .page-link:hover {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #343a40;
+        }
+        
+        .page-item.active .page-link {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #343a40;
+        }
+        
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+        }
+        
+        /* Media queries */
+        @media (max-width: 991px) {
+            .filter-bar {
+                margin-bottom: 20px;
+            }
+            
+            .filter-dropdown {
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .page-header {
+                padding: 30px 0;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .card-img-wrapper {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .page-header {
+                padding: 25px 0;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .filter-bar {
+                padding: 15px;
+            }
+            
+            .card-img-wrapper {
+                height: 160px;
+            }
+        }
+    </style>
+
+    <!-- DEALS PAGE -->
+    <div id="deals-page" style="display: block;">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="container">
+                <h1 class="page-title">Hot Deals & Offers</h1>
+                <p class="page-subtitle">Discover amazing discounts and limited-time offers on our best products</p>
+            </div>
+        </div>
+        
+        <!-- Filter Bar -->
+        <div class="container">
+            <div class="filter-bar">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 mb-3 mb-lg-0">
+                        <div class="d-flex flex-wrap align-items-center">
+                            <span class="filter-label mb-2 mb-sm-0">Sort by:</span>
+                            <select class="filter-dropdown mb-2 mb-sm-0">
+                                <option value="popular">Most Popular</option>
+                                <option value="newest">Newest First</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="discount">Biggest Discount</option>
+                            </select>
+                            
+                            <span class="filter-label mb-2 mb-sm-0">Discount:</span>
+                            <select class="filter-dropdown mb-2 mb-sm-0">
+                                <option value="all">All Discounts</option>
+                                <option value="10">10% & Above</option>
+                                <option value="20">20% & Above</option>
+                                <option value="30">30% & Above</option>
+                                <option value="50">50% & Above</option>
+                                <option value="70">70% & Above</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="search-bar">
+                            <input type="text" class="search-input" placeholder="Search deals...">
+                            <button class="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Products Row -->
+            <div class="row">
+                <!-- Deal 1 -->
+                 {% for product in products %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <img src="{{product.imageURL}}" class="category-img" alt="Health & Wellness">
+                        <div class="category-overlay">
+                            <h5 class="category-title">{{product.category}}</h5>
+                            <p class="category-items">{{product.inventory}}</p>
+                        </div>
+                        <a href="#" class="category-link"></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
+
+    
+                
+                
