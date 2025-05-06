@@ -53,7 +53,8 @@ This is a fully functional **eCommerce website** built with **HTML, CSS, JavaScr
 
 ## 🧪 Demo Credentials
 
-You can use your MySQL credentials to test the site
+- ### You can use your MySQL credentials to test the site
+- ### Do not forget to add your products initially from the admin panel to display the products in the website
 
 
 
